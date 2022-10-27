@@ -51,6 +51,7 @@ export const createStudio = (cubeMap) => {
 
 
     return {
+        scene,
         addToScene(model) {
             scene.add(model)
         },

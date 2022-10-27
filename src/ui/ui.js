@@ -18,6 +18,16 @@ export const createUi = () => {
     b3.innerText = 'generateOneStair'
     wrapper.appendChild(b3)
 
+    const b4 = document.createElement('button')
+    b4.classList.add('button-create', 'offset-top')
+    b4.innerText = 'download model'
+    wrapper.appendChild(b4)
+
+    // const b5 = document.createElement('button')
+    // b5.classList.add('button-create')
+    // b5.innerText = 'download texture'
+    // wrapper.appendChild(b5)
+
     return {
         setF: f => {
             b.addEventListener('click', f)
@@ -27,6 +37,9 @@ export const createUi = () => {
         },
         setF3: f => {
             b3.addEventListener('click', f)
+        },
+        setF4: f => {
+            b4.addEventListener('click', f) 
         }
     }
 }

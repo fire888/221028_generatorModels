@@ -1,50 +1,21 @@
 //import './styleseets/style.css'
-
-import WebGL from 'three/examples/jsm/capabilities/WebGL';
-import Stats from 'three/examples/jsm/libs/stats.module.js';
-
-import { createStudio } from './modelViewer/studio'
-//import { createModel } from './modelViewer/modelReservuar'
-import nX from './assets/env/nx.jpg'
-import pX from './assets/env/px.jpg'
-import nY from './assets/env/ny.jpg'
-import pY from './assets/env/py.jpg'
-import nZ from './assets/env/nz.jpg'
-import pZ from './assets/env/pz.jpg'
-import texture from './assets/txt1.jpg'
 import * as THREE from 'three'
-//import { GLTFExporter } from 'three/examples/jsm/exporters/GLTFExporter'
-
+import WebGL from 'three/examples/jsm/capabilities/WebGL';
+import { GLTFExporter } from './helpers/GLTFExporter'
 import { createMeshGallery } from './Entities/meshGallery.js'
 import { createMeshSuper } from './Entities/meshSuper'
 import { createMeshStairs } from './Entities/meshStairs'
 import { createUi } from './ui/ui'
+import { createStudio } from './modelViewer/studio'
+import texture from './assets/scene-model-map.jpg'
 
 
 const threeApp = () => {
 
     const ui = createUi()
     const studio = createStudio()
-    //const exporter = new GLTFExporter();
+    const exporter = new GLTFExporter();
 
-    // Parse the input and generate the glTF output
-    // exporter.parse(
-    //     scene,
-    //     // called when the gltf has been generated
-    //     function ( gltf ) {
-    
-    //         console.log( gltf );
-    //         downloadJSON( gltf );
-    
-    //     },
-    //     // called when there is an error in the generation
-    //     function ( error ) {
-    
-    //         console.log( 'An error happened' );
-    
-    //     },
-    //     options
-    // );
 
     
     let oldTime = Date.now()
@@ -78,13 +49,13 @@ const threeApp = () => {
         } 
         
         let m 
+
         const addModel = () => {
             m.mesh.geometry.computeBoundingSphere()
             studio.addToScene(m.mesh)
-            console.log(m.mesh.geometry.boundingSphere)
             studio.setTargetCam(m.mesh.geometry.boundingSphere.center)
-            console.log(m)
         }
+
         const removeModel = () => {
             studio.removeFromScene(m.mesh)
             m.mesh && m.mesh.geometry.dispose()
@@ -93,6 +64,25 @@ const threeApp = () => {
             delete m.meshCollision
             m.meshCollisionCar && m.meshCollisionCar.geometry.dispose()
             delete m.meshCollisionCar
+        }
+
+        const downLoadModel = () => {
+                exporter.parse(
+                studio.scene,
+                function ( gltf ) {
+                    console.log( gltf );
+                    var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(gltf));
+                    var dlAnchorElem = document.getElementById('downloadAnchorElem');
+                    dlAnchorElem.setAttribute("href",     dataStr     );
+                    dlAnchorElem.setAttribute("download", "scene.gltf");
+                    dlAnchorElem.click();
+                    
+                    downloadImg().then(() => {})
+                },
+                function ( error ) {
+                    console.log( 'An error happened' );
+                },
+            );
         }
 
         ui.setF(() => {
@@ -109,6 +99,9 @@ const threeApp = () => {
             removeModel()
             m = createMeshStairs(root)
             addModel()
+        }) 
+        ui.setF4(() => {
+            downLoadModel()
         }) 
 
         m = createMeshGallery(root)
@@ -131,6 +124,19 @@ const threeApp = () => {
         }
     }
     isWebGL()
+}
+
+async function downloadImg () {
+    const image = await fetch(texture)
+    const imageBlog = await image.blob()
+    const imageURL = URL.createObjectURL(imageBlog)
+  
+    const link = document.createElement('a')
+    link.href = imageURL
+    link.download = 'scene-model-map.jpg'
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
 }
 
 
