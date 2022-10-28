@@ -5,17 +5,17 @@ export const createUi = () => {
 
     const b = document.createElement('button')
     b.classList.add('button-create')
-    b.innerText = 'generateAqueduc'
+    b.innerText = 'generate item'
     wrapper.appendChild(b)
 
     const b2 = document.createElement('button')
     b2.classList.add('button-create')
-    b2.innerText = 'generateStairs'
+    b2.innerText = 'generate stairs'
     wrapper.appendChild(b2)
 
     const b3 = document.createElement('button')
     b3.classList.add('button-create')
-    b3.innerText = 'generateOneStair'
+    b3.innerText = 'generate one stair'
     wrapper.appendChild(b3)
 
     const b4 = document.createElement('button')

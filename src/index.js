@@ -1,4 +1,3 @@
-//import './styleseets/style.css'
 import * as THREE from 'three'
 import WebGL from 'three/examples/jsm/capabilities/WebGL';
 import { GLTFExporter } from './helpers/GLTFExporter'
@@ -6,7 +5,7 @@ import { createMeshGallery } from './Entities/meshGallery.js'
 import { createMeshSuper } from './Entities/meshSuper'
 import { createMeshStairs } from './Entities/meshStairs'
 import { createUi } from './ui/ui'
-import { createStudio } from './modelViewer/studio'
+import { createStudio } from './Entities/studio'
 import texture from './assets/scene-model-map.jpg'
 
 
