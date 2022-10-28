@@ -22,6 +22,8 @@ export const createDataArcHalf = ({
     arcL = 15,
     color2,
 }) => {
+    color2 = [0, 1, 0]
+
     const v = []
     const c = []
     const u = []

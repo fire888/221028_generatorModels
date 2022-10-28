@@ -20,6 +20,7 @@ export const createTopElem = ({
   h2,
 }) => {
 
+    color2 = [0, 1, 0]
 
     if (!isTopElem) {
         return {

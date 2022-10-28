@@ -15,6 +15,8 @@ export const createDataStairSimple = ({
     colorB
 }) => {
 
+    color2 = [0, 1, 0]
+
     const v = []
     const c = []
     const u = []
