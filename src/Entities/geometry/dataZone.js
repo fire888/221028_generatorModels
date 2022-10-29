@@ -73,7 +73,7 @@ export const createDataZone = ({
     zCenter,
     h,
     dir,
-    color2 = [0, .7, 0],
+    color2 = [0, 1, 0],
     colorB = [0, 0, 0],
 }) => {
     const hh = h - 3

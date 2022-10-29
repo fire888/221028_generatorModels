@@ -14,6 +14,8 @@ export const createSimpleColumn = ({ isColumn, h1, h2, color1, color2 }) => {
         }
     }
 
+    color2 = [0, 1, 0]
+
     const vertColumn = []
     const colorsColumn = []
     const uvColumn = []

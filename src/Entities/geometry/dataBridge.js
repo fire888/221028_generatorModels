@@ -11,7 +11,7 @@ import { createDataColumn } from "./dataColumn";
 
 
 const color1 = [0, 0, 0]
-const color2 = [0, .7, 0]
+const color2 = [0, 1, 0]
 const R = {
     'N': 0,
     'E': -Math.PI * .5,

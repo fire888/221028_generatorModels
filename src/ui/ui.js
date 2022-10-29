@@ -23,10 +23,10 @@ export const createUi = () => {
     b4.innerText = 'download model'
     wrapper.appendChild(b4)
 
-    // const b5 = document.createElement('button')
-    // b5.classList.add('button-create')
-    // b5.innerText = 'download texture'
-    // wrapper.appendChild(b5)
+    const b5 = document.createElement('button')
+    b5.classList.add('button-create')
+    b5.innerText = 'download texture'
+    wrapper.appendChild(b5)
 
     return {
         setF: f => {
@@ -40,6 +40,9 @@ export const createUi = () => {
         },
         setF4: f => {
             b4.addEventListener('click', f) 
+        },
+        setF5: f => {
+            b5.addEventListener('click', f)
         }
     }
 }

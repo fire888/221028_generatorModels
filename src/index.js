@@ -66,7 +66,7 @@ const threeApp = () => {
         }
 
         const downLoadModel = () => {
-                exporter.parse(
+            exporter.parse(
                 studio.scene,
                 function ( gltf ) {
                     console.log( gltf );
@@ -75,13 +75,11 @@ const threeApp = () => {
                     dlAnchorElem.setAttribute("href",     dataStr     );
                     dlAnchorElem.setAttribute("download", "scene.gltf");
                     dlAnchorElem.click();
-                    
-                    downloadImg().then(() => {})
                 },
                 function ( error ) {
                     console.log( 'An error happened' );
                 },
-            );
+            )
         }
 
         ui.setF(() => {
@@ -101,7 +99,10 @@ const threeApp = () => {
         }) 
         ui.setF4(() => {
             downLoadModel()
-        }) 
+        })
+        ui.setF5(() => {
+            downloadImg().then(() => {})
+        })
 
         m = createMeshGallery(root)
         addModel()

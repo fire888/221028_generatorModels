@@ -15,7 +15,7 @@ export const createMeshStairs = (root) => {
 
 
     for (let i = 0; i < scheme.length; ++i) {
-        const { v, c, u, collision } = createSegmentStair(scheme[i], [1, 1, 1], [0, .7, 0],)
+        const { v, c, u, collision } = createSegmentStair(scheme[i], [1, 1, 1], [0, 1, 0],)
         vertP.push(...v)
         colorsP.push(...c)
         uvTopP.push(...u)
