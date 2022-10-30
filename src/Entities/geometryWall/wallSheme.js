@@ -28,23 +28,35 @@ export const createWallScheme = data => {
                 xR = len
             } 
 
-
             let yR = y + ran(ranD) - ranR
             if (y === 0) {
                 yR = y
             }
             if (y >= h2) {
-                y = h2
+                yR = h2
             } 
 
-            arr.push({ x: xR, y: yR }) 
+            arr.push({ x: xR, y: yR, nears: [] }) 
 
-            
             y += step
         }
 
         y = 0
         x += step
+    }
+
+    for (let i = 0; i < arr.length; ++i) {
+        for (let j = 0; j < arr.length; ++j) {
+            if (i === j) {
+                continue;
+            }
+
+            const dX = arr[j].x - arr[i].x 
+            const dY = arr[j].y - arr[i].y 
+            if (Math.sqrt(dX * dX + dY * dY) < (step * 1.1)) {
+                arr[i].nears.push(j)
+            }
+        }
     }
 
     console.log(arr)
