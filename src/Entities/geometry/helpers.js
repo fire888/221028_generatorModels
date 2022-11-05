@@ -12,6 +12,7 @@ export const ran = (start, end) => start + random() * (end - start)
 export const createFace = (v1, v2, v3, v4) => [...v1, ...v2, ...v3, ...v1, ...v3, ...v4]
 export const createUv = (v1, v2, v3, v4) => [...v1, ...v2, ...v3, ...v1, ...v3, ...v4]
 export const fillColorFace = c => [...c, ...c, ...c, ...c, ...c, ...c]
+export const fillColor6 = c => [...c, ...c, ...c, ...c, ...c, ...c]
 
 
 
@@ -156,4 +157,15 @@ export const translateArr = (arr, x = 0, y = 0, z = 0) => {
         arr[i + 1] = vector[1]
         arr[i + 2] = vector[2]
     }
+}
+
+
+export const getAngle = (x, y) => {
+    let inRads = Math.atan2(y, x);
+    //if (inRads < 0)
+    //    inRads = Math.abs(inRads);
+    //else
+    //    inRads = 2 * Math.PI - inRads;
+
+    return inRads - Math.PI / 2
 }
