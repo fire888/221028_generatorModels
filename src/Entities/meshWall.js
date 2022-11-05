@@ -16,6 +16,7 @@ export const createMeshWall = (root) => {
 
     const v = []
     const c = []
+    const u2 = []
     
 
     const scheme = createWallScheme({})
@@ -30,6 +31,7 @@ export const createMeshWall = (root) => {
                 const dataLine = createDataLine({}, scheme[i][j], scheme[n.i][n.j])
                 v.push(...dataLine.v)
                 c.push(...dataLine.c)
+                //c2.push(...dataLine.c2)
 
                 //const geomL = new THREE.BufferGeometry().setFromPoints([p1, p2]);
                 //const line = new THREE.Line( geomL, material );
@@ -46,13 +48,13 @@ export const createMeshWall = (root) => {
 
     const vertices = new Float32Array(v)
     const colors =  new Float32Array(c)
-    //const uv = new Float32Array(u)
+    const uv2 = new Float32Array(u2)
 
     /** mesh main */
     const g = new THREE.BufferGeometry()
     g.setAttribute('position', new THREE.BufferAttribute(vertices, 3))
-    g.setAttribute('color', new THREE.BufferAttribute( colors, 3 ))
-    //uv && geometry.setAttribute('uv', new THREE.BufferAttribute( uv, 2 ))
+    g.setAttribute('color', new THREE.BufferAttribute(colors, 3))
+    geometry.setAttribute('uv2', new THREE.BufferAttribute(uv2, 2))
     g.computeVertexNormals()
     const wallMat = root.materials.wallVirtualColor
     const wallMesh = new THREE.Mesh(g, wallMat)

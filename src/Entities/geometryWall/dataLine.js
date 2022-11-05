@@ -26,6 +26,8 @@ export const createDataLine = (params, p1, p2) => {
 
     const v = []
     const c = []
+    const u2 = []
+
 
     const hw = w / 2
     const ht = t / 2
@@ -62,12 +64,18 @@ export const createDataLine = (params, p1, p2) => {
         ...fillColor6(color2),
         ...fillColor6(color1),
     )
+    u2.push(
+        0, 0,   0, 0,   0, 0,    0, 0,   0, 0,   0, 0,
+        0, .75,   .25, .75,   .25, 2,    0, .75,   .25, 1,   0, 1,
+        0, .75,   .25, .75,   .25, 2,    0, .75,   .25, 1,   0, 1,
+        0, 0,   0, 0,   0, 0,    0, 0,   0, 0,   0, 0,
+    )
 
     const angle = getAngle(dx, dy)
     rotateArrZ(v, angle)
     translateArr(v, p1.x, p1.y, 0)
 
 
-    return { v, c }
+    return { v, c, u2 }
 
 }

@@ -38,7 +38,13 @@ export const createWallScheme = data => {
     for (let i = 0; i < arr.length; ++i) {
         for (let j = 0; j < arr[i].length; ++j) {
             if (arr[i - 1] && arr[i - 1][j]) {
-                arr[i][j].nears.push({ i: i - 1, j })
+                if (i % 2 !== 0) {
+                    arr[i][j].nears.push({ i: i - 1, j })
+                } else {
+                    if (j === 0 || j == arr[i].length - 1) {
+                        arr[i][j].nears.push({ i: i - 1, j })
+                    }
+                }
             }
             if (arr[i] && arr[i][j - 1]) {
                 arr[i][j].nears.push({ i, j: j - 1 })
