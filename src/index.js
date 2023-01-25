@@ -1,6 +1,7 @@
 import * as THREE from 'three'
 import WebGL from 'three/examples/jsm/capabilities/WebGL';
 import { GLTFExporter } from './helpers/GLTFExporter'
+import { createTown2 } from './Entities/town/town2'
 import { createMeshGallery } from './Entities/meshGallery.js'
 import { createMeshSuper } from './Entities/meshSuper'
 import { createMeshStairs } from './Entities/meshStairs'
@@ -8,6 +9,11 @@ import { createMeshWall } from './Entities/meshWall'
 import { createUi } from './ui/ui'
 import { createStudio } from './Entities/studio'
 import texture from './assets/scene-model-map.jpg'
+
+import consA0Src from './assets/broken_down_concrete2_ao.jpg'
+import consNormSrc from './assets/broken_down_concrete2_Normal-dx.jpg'
+
+
 
 
 const createrMeshes = root => {
@@ -29,6 +35,33 @@ const createrMeshes = root => {
         }),
         'testRed': new THREE.MeshBasicMaterial({
             color: 0xff0000,
+        }),
+        'iron' : new THREE.MeshPhongMaterial({
+            color: 0xcccccc,
+            //map: 'mapTop',
+            //map: '',
+            //bumpMap: 'ironHeight',
+            //lightMap: 'ironAO',
+            lightMapIntensity: .35,
+
+            aoMap: new THREE.TextureLoader().load(consA0Src),
+            //aoMap: 'ironAlbedo',
+            //aoMapIntensity: 5,
+
+            normalMap: new THREE.TextureLoader().load(consNormSrc),
+            normalScale: new THREE.Vector2(.1, .1),
+
+            //specularMap: 'ironAlbedo',
+
+            //bumpScale: 0,
+            //envMap: 'skyBox3',
+            reflectivity: .02,
+            shininess: 100,
+            specular: 0x020201,
+            vertexColors: true,
+            //wireframe: true,
+            //metalnessMap: 'ironAlbedo',
+            //roughnessMap: 'ironAlbedo',
         }),
     }
     
@@ -66,9 +99,10 @@ const createrMeshes = root => {
         )
     }
 
-    ui.setOnClick('generate wall', () => {
+    ui.setOnClick('generate rooms', () => {
         removeModel()
-        m = createMeshWall(root)
+        //m = createMeshWall(root)
+        m = createTown2(root)
         addModel()
     })
 
@@ -93,7 +127,8 @@ const createrMeshes = root => {
         downloadImg().then()
     })
 
-    m = createMeshWall(root)
+    //m = createMeshWall(root)
+    m = createTown2(root)
     addModel()
 }
 
