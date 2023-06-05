@@ -5,11 +5,11 @@ import { createTown2 } from './Entities/town/town2'
 import { createMeshGallery } from './Entities/meshGallery.js'
 import { createMeshSuper } from './Entities/meshSuper'
 import { createMeshStairs } from './Entities/meshStairs'
-import { createMeshWall } from './Entities/meshWall'
 import { createUi } from './ui/ui'
 import { createStudio } from './Entities/studio'
+import { createStructure3 } from './Entities/Structure03/structure03'
 import texture from './assets/scene-model-map.jpg'
-
+import texture0 from './assets/texture01.jpg'
 import consA0Src from './assets/broken_down_concrete2_ao.jpg'
 import consNormSrc from './assets/broken_down_concrete2_Normal-dx.jpg'
 
@@ -38,34 +38,22 @@ const createrMeshes = root => {
         }),
         'iron' : new THREE.MeshPhongMaterial({
             color: 0xcccccc,
-            //map: 'mapTop',
-            //map: '',
-            //bumpMap: 'ironHeight',
-            //lightMap: 'ironAO',
             lightMapIntensity: .35,
-
             aoMap: new THREE.TextureLoader().load(consA0Src),
-            //aoMap: 'ironAlbedo',
-            //aoMapIntensity: 5,
-
             normalMap: new THREE.TextureLoader().load(consNormSrc),
             normalScale: new THREE.Vector2(.1, .1),
-
-            //specularMap: 'ironAlbedo',
-
-            //bumpScale: 0,
-            //envMap: 'skyBox3',
             reflectivity: .02,
             shininess: 100,
             specular: 0x020201,
             vertexColors: true,
-            //wireframe: true,
-            //metalnessMap: 'ironAlbedo',
-            //roughnessMap: 'ironAlbedo',
         }),
     }
-    
-    let m 
+
+    let m
+
+    const structure = createStructure3(root)
+    //m.generateStructure()
+
 
     const addModel = () => {
         m.mesh.geometry.computeBoundingSphere()
@@ -74,13 +62,16 @@ const createrMeshes = root => {
     }
 
     const removeModel = () => {
-        studio.removeFromScene(m.mesh)
-        m.mesh && m.mesh.geometry.dispose()
-        delete m.mesh
-        m.meshCollision && m.meshCollision.geometry.dispose()
-        delete m.meshCollision
-        m.meshCollisionCar && m.meshCollisionCar.geometry.dispose()
-        delete m.meshCollisionCar
+        structure.destroyStructure()
+        if (m) {
+            studio.removeFromScene(m.mesh)
+            m && m.mesh && m.mesh.geometry.dispose()
+            delete m.mesh
+            m.meshCollision && m.meshCollision.geometry.dispose()
+            delete m.meshCollision
+            m.meshCollisionCar && m.meshCollisionCar.geometry.dispose()
+            delete m.meshCollisionCar
+        }
     }
 
     const downLoadModel = () => {
@@ -99,12 +90,26 @@ const createrMeshes = root => {
         )
     }
 
+    ui.setOnClick('generate level', () => {
+        removeModel()
+        structure.generateStructure()
+        m = null
+    })
+
+
     ui.setOnClick('generate rooms', () => {
         removeModel()
         //m = createMeshWall(root)
         m = createTown2(root)
         addModel()
     })
+
+    // ui.setOnClick(null, () => {})
+    // ui.setOnClick(null, () => {})
+    // ui.setOnClick(null, () => {})
+    // ui.setOnClick(null, () => {})
+    // ui.setOnClick(null, () => {})
+    // ui.setOnClick(null, () => {})
 
     ui.setOnClick('generate item', () => {
         removeModel()
@@ -123,24 +128,32 @@ const createrMeshes = root => {
     })
     ui.setOnClick(null, () => {}) 
     ui.setOnClick('download model', downLoadModel)
-    ui.setOnClick('download texture', () => {
-        downloadImg().then()
+    ui.setOnClick('download texture 1', () => {
+        downloadImg(texture,  'scene-model-map.jpg').then()
+    })
+    ui.setOnClick('download texture 2', () => {
+        downloadImg(texture0, 'texture01.jpg').then()
+    })
+    ui.setOnClick('download texture 3', () => {
+        downloadImg(consNormSrc, 'roken_down_concrete2_Normal-dx.jpg').then()
+    })
+    ui.setOnClick('download texture 3', () => {
+        downloadImg(consA0Src, 'broken_down_concrete2_ao.jpg').then()
     })
 
-    //m = createMeshWall(root)
     m = createTown2(root)
     addModel()
 }
 
 
-async function downloadImg () {
+async function downloadImg (texture, name) {
     const image = await fetch(texture)
     const imageBlog = await image.blob()
     const imageURL = URL.createObjectURL(imageBlog)
   
     const link = document.createElement('a')
     link.href = imageURL
-    link.download = 'scene-model-map.jpg'
+    link.download = name
     document.body.appendChild(link)
     link.click()
     document.body.removeChild(link)
