@@ -12,6 +12,7 @@ import texture from './assets/scene-model-map.jpg'
 import texture0 from './assets/texture01.jpg'
 import consA0Src from './assets/broken_down_concrete2_ao.jpg'
 import consNormSrc from './assets/broken_down_concrete2_Normal-dx.jpg'
+//import './EntitiesTest/phormulas'
 
 
 
