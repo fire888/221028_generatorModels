@@ -4,8 +4,6 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 const BACK_COLOR = 0x333333
 
 
-
-
 export const createStudio = (cubeMap) => {
     const container = document.querySelector('#scene');
     container.style.width = window.innerWidth + 'px'
@@ -13,7 +11,7 @@ export const createStudio = (cubeMap) => {
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 10000);
-    camera.position.set( 0, 1000, 1000);
+    camera.position.set( 0, 10, 10);
     camera.lookAt(0, 0, 0)
     scene.add(camera)
 
@@ -33,7 +31,6 @@ export const createStudio = (cubeMap) => {
     light.shadow.camera.near = 0.5; // default
     light.shadow.camera.far = 500; // default
 
-
     // const light2 = new THREE.PointLight( 0xffffff, 1.5 )
     // light2.position.set(-30, 20, -40)
     // camera.add(light2)
@@ -49,8 +46,13 @@ export const createStudio = (cubeMap) => {
     controls.update();
     //controls.maxPolarAngle = Math.PI / 2 - 0.1
 
+    const axesHelper = new THREE.AxesHelper(1)
+    scene.add(axesHelper)
+    const gridHelper = new THREE.GridHelper(1, 10)
+    scene.add(gridHelper)
 
     return {
+        renderer,
         scene,
         addToScene(model) {
             scene.add(model)
