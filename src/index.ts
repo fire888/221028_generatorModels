@@ -10,6 +10,7 @@ import { createUi } from './ui/ui'
 import { createStudio } from './Entities/studio'
 import { createStructure3 } from './Entities/Structure03/structure03'
 import { createMeshWall } from 'Entities/meshWall';
+import { Labyrinth } from 'Entities/townHouses/entityLabyrinth/Labyrinth'
 import texture from './assets/scene-model-map.jpg'
 import texture0 from './assets/texture01.jpg'
 import consA0Src from './assets/broken_down_concrete2_ao.jpg'
@@ -53,19 +54,19 @@ const createrMeshes = (root: any) => {
 
     const structure = createStructure3(root)
     //m.generateStructure()
-
+    const lab4 = new Labyrinth() 
 
     const addModel = () => {
-        m.mesh.geometry.computeBoundingSphere()
+        m.mesh.geometry && m.mesh.geometry.computeBoundingSphere()
         studio.addToScene(m.mesh)
-        studio.setTargetCam(m.mesh.geometry.boundingSphere.center)
+        m.mesh.geometry && studio.setTargetCam(m.mesh.geometry.boundingSphere.center)
     }
 
     const removeModel = () => {
         structure.destroyStructure()
         if (m) {
             studio.removeFromScene(m.mesh)
-            m && m.mesh && m.mesh.geometry.dispose()
+            m && m.mesh && m.mesh.geometry && m.mesh.geometry.dispose()
             delete m.mesh
             m.meshCollision && m.meshCollision.geometry.dispose()
             delete m.meshCollision
@@ -89,6 +90,22 @@ const createrMeshes = (root: any) => {
             },
         )
     }
+
+    ui.setOnClick('generate level', async() => {
+        removeModel()
+        await lab4.build(
+            {  // VVV квадрат средний
+                SX: 60,
+                SY: 60,
+                N: 30,
+                repeats: [
+                    [-20, -20],
+                ],
+            },
+        )
+        m = lab4
+        addModel()
+    })
 
     ui.setOnClick('generate level', () => {
         removeModel()
