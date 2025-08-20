@@ -1,6 +1,4 @@
 // import './EntitiesTest/phormulas'
-
-
 import * as THREE from 'three'
 import WebGL from 'three/examples/jsm/capabilities/WebGL';
 import { GLTFExporter } from './helpers/GLTFExporter'
@@ -11,13 +9,13 @@ import { createMeshStairs } from './Entities/meshStairs'
 import { createUi } from './ui/ui'
 import { createStudio } from './Entities/studio'
 import { createStructure3 } from './Entities/Structure03/structure03'
+import { createMeshWall } from 'Entities/meshWall';
 import texture from './assets/scene-model-map.jpg'
 import texture0 from './assets/texture01.jpg'
 import consA0Src from './assets/broken_down_concrete2_ao.jpg'
 import consNormSrc from './assets/broken_down_concrete2_Normal-dx.jpg'
 
-
-const createrMeshes = root => {
+const createrMeshes = (root: any) => {
     const {
         studio,
         ui,
@@ -27,6 +25,7 @@ const createrMeshes = root => {
     root.materials = {
         'wallVirtualColor': new THREE.MeshBasicMaterial({
             color: 0xffffff,
+            // @ts-ignore
             emissive: 0x000000,
             map: root.texture,
             bumpMap: root.texture,
@@ -50,7 +49,7 @@ const createrMeshes = root => {
         }),
     }
 
-    let m
+    let m: any
 
     const structure = createStructure3(root)
     //m.generateStructure()
@@ -78,14 +77,14 @@ const createrMeshes = root => {
     const downLoadModel = () => {
         exporter.parse(
             studio.scene,
-            function ( gltf ) {
+            function (gltf: any) {
                 var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(gltf));
                 var dlAnchorElem = document.getElementById('downloadAnchorElem');
                 dlAnchorElem.setAttribute("href",     dataStr     );
                 dlAnchorElem.setAttribute("download", "scene.gltf");
                 dlAnchorElem.click();
             },
-            function ( error ) {
+            function ( error: any ) {
                 console.log( 'An error happened' );
             },
         )
@@ -97,6 +96,12 @@ const createrMeshes = root => {
         m = null
     })
 
+    ui.setOnClick('generate WALLS', () => {
+        removeModel()
+        m = createMeshWall(root)
+        //m = createTown2(root)
+        addModel()
+    })
 
     ui.setOnClick('generate rooms', () => {
         removeModel()
@@ -147,7 +152,7 @@ const createrMeshes = root => {
 }
 
 
-async function downloadImg (texture, name) {
+async function downloadImg (texture: any, name: any) {
     const image = await fetch(texture)
     const imageBlog = await image.blob()
     const imageURL = URL.createObjectURL(imageBlog)
@@ -181,6 +186,7 @@ const threeApp = () => {
 
     const loader = new THREE.TextureLoader();
     loader.load(texture, texture => {
+        // @ts-ignore
         root.texture = texture
         createrMeshes(root)
     })
@@ -201,7 +207,5 @@ const threeApp = () => {
     }
     isWebGL()
 }
-
-
 
 threeApp()

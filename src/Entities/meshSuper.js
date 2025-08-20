@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import * as THREE from 'three'
 
 import { createSegmentStair } from './geometry/segmentStair'

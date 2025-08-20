@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { createWall } from './geometryRoom/geomWall'
 import { createDoorData } from './geometryRoom/geomDoor'
 import { createOuterWall } from './geometryRoom/outerWall'

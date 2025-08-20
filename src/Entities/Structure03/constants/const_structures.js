@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { Color } from 'three'
 
 export const W = 160

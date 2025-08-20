@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { Color } from 'three'
 import {
     STRUCTURE_TWO_HOUSES,

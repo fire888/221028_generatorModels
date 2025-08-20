@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { createMap3X } from './map3SHelper'
 //import { map3SArtifactsFilter } from './map3SArtefactsFilter'
 

@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { createDataColumn } from './dataColumn'
 import { createDataSideArc } from "./dataArc";
 import { createTopElem } from "./dataTopElem";

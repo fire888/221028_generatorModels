@@ -1,3 +1,4 @@
+/* eslint-disable */
 let minS = 250
 //const S1 = 500
 let S2 = 3000

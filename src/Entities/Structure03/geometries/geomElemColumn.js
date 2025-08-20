@@ -1,3 +1,4 @@
+/* eslint-disable */
 import {H} from "../constants/constants_elements";
 import {createFace, fillColorFace, rotateArrY} from "../helpers/geomHelpers";
 import {

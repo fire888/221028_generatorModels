@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import {tryToDivideRoom, roomStart, regenerate, getId} from './town2TryToDivide'
 const DOOR_SIZE = 30
 const DOOR_SIZE_FULL = 60

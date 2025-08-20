@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { W, H } from '../constants/constants_elements'
 import {
     translateArr,

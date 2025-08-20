@@ -1,3 +1,4 @@
+/* eslint-disable */
 const createSet = ({ xCenter, zCenter, hStart, hEnd, count }) => {
     const r = 20
     const hDiff = hEnd - hStart

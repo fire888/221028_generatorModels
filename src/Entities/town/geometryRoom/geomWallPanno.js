@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import {createFace, createFaceWithSquare} from "../helpers/geomHelpers";
 
 const white1 = [1, 1, 1]

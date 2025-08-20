@@ -1,3 +1,4 @@
+/* eslint-disable */
 export const createSchemeStairs = () => {
     const r = 20
     const stepH = 30

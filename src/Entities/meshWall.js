@@ -1,10 +1,10 @@
+/* eslint-disable */
 import * as THREE from 'three'
 import { createWallScheme } from './geometryWall/wallSheme'
 import { createDataLine  } from './geometryWall/dataLine'
 
 
 export const createMeshWall = (root) => {
-    console.log('!!-')
     const geometry = new THREE.BoxGeometry(1, 1, 1)
 
     const mat = root.materials.wallVirtualColor

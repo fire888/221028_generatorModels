@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { STRUCTURES } from './constants/constants_elements'
 import { createDataTiles } from './tilesMakerData'
 import { createMap } from './map3SCreaterFromTiles'

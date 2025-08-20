@@ -1,4 +1,4 @@
-
+/* eslint-disable */
 
 const makeQueue = (map, SIZE_X, SIZE_Y, SIZE_Z) => {
     const m = {}

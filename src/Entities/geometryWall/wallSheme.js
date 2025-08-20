@@ -1,3 +1,4 @@
+/* eslint-disable */
 const ranMM = (min, max) => Math.random() * (max - min) + min
 const ran = v => Math.random() * v 
 

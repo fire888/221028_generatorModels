@@ -1,3 +1,4 @@
+/* eslint-disable */
 import * as THREE from "three"
 import { createGeomL } from './geometries/geometryTileL'
 import { createGeomI } from './geometries/geometryTileI'

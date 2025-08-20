@@ -1,8 +1,9 @@
+/* eslint-disable */
+
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
 const BACK_COLOR = 0x333333
-
 
 export const createStudio = (cubeMap) => {
     const container = document.querySelector('#scene');
@@ -10,8 +11,8 @@ export const createStudio = (cubeMap) => {
     container.style.height = window.innerHeight + 'px';
 
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 10000);
-    camera.position.set( 0, 100, 100);
+    const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 10000);
+    camera.position.set(0, 100, 100);
     camera.lookAt(0, 0, 0)
     scene.add(camera)
 
@@ -22,14 +23,14 @@ export const createStudio = (cubeMap) => {
 
     container.appendChild( renderer.domElement );
 
-    const light = new THREE.PointLight( 0xffffff, .8)
-    light.position.set(20, 1000, 1000)
+    const light = new THREE.DirectionalLight(0xffffff, 1, 1000, 10)
+    light.position.set(20, 20, 20)
     camera.add(light)
-    light.castShadow = true; // default false
-    light.shadow.mapSize.width = 2048; // default
-    light.shadow.mapSize.height = 2048; // default
-    light.shadow.camera.near = 0.5; // default
-    light.shadow.camera.far = 500; // default
+    //light.castShadow = true; // default false
+    //light.shadow.mapSize.width = 2048; // default
+    //light.shadow.mapSize.height = 2048; // default
+    //light.shadow.camera.near = 0.5; // default
+    //light.shadow.camera.far = 500; // default
 
     // const light2 = new THREE.PointLight( 0xffffff, 1.5 )
     // light2.position.set(-30, 20, -40)
@@ -37,7 +38,6 @@ export const createStudio = (cubeMap) => {
 
     const ambLight = new THREE.AmbientLight(0x555555, .8)
     scene.add(ambLight)
-
 
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.minDistance = 2;

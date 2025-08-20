@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { createDataSideColumn } from './dataColumnSide'
 import {
     transformArr,

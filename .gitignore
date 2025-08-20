@@ -1,4 +1,6 @@
-node_modules
-package-lock.json
+.env
 .idea
-dist
+/dist
+node_modules
+/node_modules
+analysis

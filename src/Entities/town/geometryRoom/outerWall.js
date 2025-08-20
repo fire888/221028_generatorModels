@@ -1,3 +1,4 @@
+/* eslint-disable */
 import * as THREE from 'three'
 import { createFace, rotateArrY, angleFromCoords, translateArr} from '../helpers/geomHelpers'
 

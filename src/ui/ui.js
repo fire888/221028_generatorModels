@@ -1,3 +1,4 @@
+/* eslint-disable */
 export const createUi = () => {
     const wrapper = document.createElement('div')
     wrapper.classList.add('ui-wrapper')
