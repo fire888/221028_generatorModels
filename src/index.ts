@@ -10,6 +10,7 @@ import { createUi } from './ui/ui'
 import { createStudio } from './Entities/studio'
 import { createStructure3 } from './Entities/Structure03/structure03'
 import { createMeshWall } from 'Entities/meshWall';
+import { Lab } from './Entities/level5gon/entities/labyrinth/Lab'
 import { Labyrinth } from 'Entities/townHouses/entityLabyrinth/Labyrinth'
 import texture from './assets/scene-model-map.jpg'
 import texture0 from './assets/texture01.jpg'
@@ -54,16 +55,26 @@ const createrMeshes = (root: any) => {
 
     const structure = createStructure3(root)
     //m.generateStructure()
-    const lab4 = new Labyrinth() 
+    const lab4 = new Labyrinth()
+    const lab5Gon = new Lab()
 
     const addModel = () => {
-        m.mesh.geometry && m.mesh.geometry.computeBoundingSphere()
         studio.addToScene(m.mesh)
-        m.mesh.geometry && studio.setTargetCam(m.mesh.geometry.boundingSphere.center)
+        if (m.mesh.geometry) {
+            m.mesh.geometry.computeBoundingSphere()
+            studio.setTargetCam(m.mesh.geometry.boundingSphere.center)
+        } else if (m.cameraLookData) {
+            studio.setTargetCam(m.cameraLookData.lookAt)
+        }
+
     }
 
     const removeModel = () => {
         structure.destroyStructure()
+        if (m && m.type && m.type === 'HouseTown') {
+            studio.removeFromScene(m.mesh)
+            m.clear()
+        }
         if (m) {
             studio.removeFromScene(m.mesh)
             m && m.mesh && m.mesh.geometry && m.mesh.geometry.dispose()
@@ -91,18 +102,17 @@ const createrMeshes = (root: any) => {
         )
     }
 
-    ui.setOnClick('generate level', async() => {
+    ui.setOnClick('generate level n5Gon', async() => {
         removeModel()
-        await lab4.build(
-            {  // VVV квадрат средний
-                SX: 60,
-                SY: 60,
-                N: 30,
-                repeats: [
-                    [-20, -20],
-                ],
-            },
-        )
+        await lab5Gon.init()
+        m = lab5Gon
+        addModel()
+    })
+
+
+    ui.setOnClick('generate level housesTown', async() => {
+        removeModel()
+        await lab4.build()
         m = lab4
         addModel()
     })
@@ -164,7 +174,9 @@ const createrMeshes = (root: any) => {
         downloadImg(consA0Src, 'broken_down_concrete2_ao.jpg').then()
     })
 
-    m = createTown2(root)
+    //m = createTown2(root)
+    m = lab4
+    lab4.build()
     addModel()
 }
 

@@ -16,16 +16,35 @@ type THousesGeomeries = {
 }
 
 export class Labyrinth {
-    //_root: Root
+    type: string = 'HouseTown'
     _houses: THREE.Mesh[] = []
     _roads: THREE.Mesh[] = []
     _stricts: THREE.Group[] = []
     _collisionsNames: string[] = []
     _labSheme: TLabData = { areasData: [], positionsEnergy: [], positionsAntigravs: [] }
-    mesh: THREE.Group = new THREE.Group()
-    mat: THREE.MeshPhongMaterial = new THREE.MeshPhongMaterial({ color: 0xFFFFFF, vertexColors: true }) 
+    mesh: THREE.Group | null = new THREE.Group()
+    mat: THREE.MeshPhongMaterial = new THREE.MeshPhongMaterial({ color: 0xFFFFFF, vertexColors: true })
+    cameraLookData: {
+        lookAt: THREE.Vector3,
+        position: THREE.Vector3,
+    } = { lookAt: new THREE.Vector3(), position: new THREE.Vector3() }
 
-    async build (conf: ILevelConf) {
+    async build (conf: ILevelConf =             
+        {  // VVV квадрат средний
+            SX: 60,
+            SY: 60,
+            N: 30,
+            repeats: [
+                [-20, -20],
+            ],
+        },
+    ) {
+
+        if (!this.mesh) {
+            this.mesh = new THREE.Group()
+        }
+
+        
         console.log('[MESSAGE:] START SCHEME')
         let d = Date.now()
         const scheme: TSchemeElem[] = createScheme(conf)
@@ -102,6 +121,21 @@ export class Labyrinth {
             this._buildRoads(this._labSheme.areasData, offset[0], offset[1])
         }
         console.log('[TIME:] COMPLETE ADD ROADS', ((Date.now() - d) / 1000).toFixed(2))
+
+        let minX = Infinity
+        let maxX = -Infinity
+        let minZ = Infinity
+        let maxZ = -Infinity
+        for (let i = 0; i < conf.repeats.length; ++i) {
+            if (conf.repeats[i][0] + conf.SX < minX) minX = conf.repeats[i][0]
+            if (conf.repeats[i][0] + conf.SX > maxX) maxX = conf.repeats[i][0]
+            if (conf.repeats[i][1] + conf.SY < minZ) minZ = conf.repeats[i][1]
+            if (conf.repeats[i][1] + conf.SY > maxZ) maxZ = conf.repeats[i][1]
+        }
+        this.cameraLookData = {
+            lookAt: new THREE.Vector3(minX + (maxX - minX) * .5, 0, minZ + (maxZ - minZ) * .5),
+            position: new THREE.Vector3(maxX, 100, maxZ)
+        }
     }
 
     async clear () {
@@ -128,6 +162,8 @@ export class Labyrinth {
             this._stricts[i].parent.remove(this._stricts[i])
         }
         this._stricts = []
+
+        this.mesh = null
     }
 
     get positionsEnergy () {
