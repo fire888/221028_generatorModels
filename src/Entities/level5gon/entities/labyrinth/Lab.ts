@@ -5,6 +5,7 @@ import {
     MeshBasicMaterial,
     Vector3,
 } from 'three'
+import * as THREE from 'three'
 import { LabLevel } from './LabLevel'
 import { createStair } from '../../geometry/stair'
 import { TopTunnel } from './TopTunnel'
@@ -31,6 +32,11 @@ export class Lab {
 
     private _topTunnel: TopTunnel
 
+    cameraLookData: {
+        lookAt: THREE.Vector3,
+        position: THREE.Vector3,
+    } = { lookAt: new THREE.Vector3(), position: new THREE.Vector3() }
+
     async init (params = { TILES_X: 11, TILES_Z: 13, FLOORS_NUM: 5 }) {
         const {
             TILES_X,
@@ -53,7 +59,6 @@ export class Lab {
             })
             this._collisionMaterial = new MeshBasicMaterial({ color: 0xFFFF00 })
         }
-
 
         // start stair *******************************************/
 
@@ -92,8 +97,6 @@ export class Lab {
         this._namesMeshes.push(collisionStairMesh.name)
         collisionStairMesh.position.x = W * 5
         collisionStairMesh.position.z = W
-        //phisics.addMeshToCollision(collisionStairMesh)
-
 
         // levels *******************************************/
 
@@ -125,8 +128,6 @@ export class Lab {
             labLevel.collisionMesh.position.y = LEVEL_H * i + LEVEL_H
             labLevel.collisionMesh.name = this.nameSpace + i
             this._namesMeshes.push(labLevel.collisionMesh.name)
-            //phisics.addMeshToCollision(labLevel.collisionMesh)
-
 
             // create stair
             const stairDataTopExit = createRandomDataForLine()
@@ -196,7 +197,6 @@ export class Lab {
             collisionMesh.position.x = W * labLevel.posEnd[0]
             collisionMesh.position.z = W * labLevel.posEnd[1]
             collisionMesh.position.y = (i + 1) * LEVEL_H
-            //phisics.addMeshToCollision(collisionMesh)
 
             // save for next level
             posStart = labLevel.posEnd
@@ -271,6 +271,10 @@ export class Lab {
         this._meshes.push(this._topTunnel.mesh)
 
         this.lastDir = posStartDir
+
+        // calculate camera view pos
+        this.cameraLookData.lookAt.set(TILES_X * .5 * W, 0, TILES_Z * .5 * W)
+        this.cameraLookData.position.set(TILES_X * .5 * W, 100, TILES_Z * .5 * W + 100) 
     } 
 
     async openDoor () {

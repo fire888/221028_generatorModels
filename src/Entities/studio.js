@@ -23,7 +23,7 @@ export const createStudio = (cubeMap) => {
 
     container.appendChild( renderer.domElement );
 
-    const light = new THREE.DirectionalLight(0xffffff, 1, 1000, 10)
+    const light = new THREE.DirectionalLight(0xffffff, 2, 1000, 10)
     light.position.set(20, 20, 20)
     camera.add(light)
     //light.castShadow = true; // default false
@@ -51,6 +51,9 @@ export const createStudio = (cubeMap) => {
     const gridHelper = new THREE.GridHelper(1, 10)
     scene.add(gridHelper)
 
+    const helper = new THREE.AxesHelper(50)
+    scene.add(helper)
+
     return {
         renderer,
         scene,
@@ -67,8 +70,9 @@ export const createStudio = (cubeMap) => {
             renderer.render(scene, camera)
         },
         setTargetCam: v => {
-            controls.target.set( v.x, v.y, v.z );
-            controls.update();
+            controls.target.set(v.x, v.y, v.z)
+            camera.lookAt(v.x, v.y, v.z)
+            controls.update()
         },
         resize () {
             if (!camera) {

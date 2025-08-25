@@ -127,14 +127,14 @@ export class Labyrinth {
         let minZ = Infinity
         let maxZ = -Infinity
         for (let i = 0; i < conf.repeats.length; ++i) {
-            if (conf.repeats[i][0] + conf.SX < minX) minX = conf.repeats[i][0]
-            if (conf.repeats[i][0] + conf.SX > maxX) maxX = conf.repeats[i][0]
-            if (conf.repeats[i][1] + conf.SY < minZ) minZ = conf.repeats[i][1]
-            if (conf.repeats[i][1] + conf.SY > maxZ) maxZ = conf.repeats[i][1]
+            if (minX > conf.repeats[i][0]) minX = conf.repeats[i][0]
+            if (maxX < conf.repeats[i][0] + conf.SX) maxX = conf.repeats[i][0] + conf.SX
+            if (minZ > conf.repeats[i][1]) minZ = conf.repeats[i][1]
+            if (maxZ < conf.repeats[i][1] + conf.SY) maxZ = conf.repeats[i][1] + conf.SY
         }
         this.cameraLookData = {
             lookAt: new THREE.Vector3(minX + (maxX - minX) * .5, 0, minZ + (maxZ - minZ) * .5),
-            position: new THREE.Vector3(maxX, 100, maxZ)
+            position: new THREE.Vector3(minX + (maxX - minX) * .5, 100, maxZ * 3)
         }
     }
 

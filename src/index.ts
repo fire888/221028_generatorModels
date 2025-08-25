@@ -54,7 +54,6 @@ const createrMeshes = (root: any) => {
     let m: any
 
     const structure = createStructure3(root)
-    //m.generateStructure()
     const lab4 = new Labyrinth()
     const lab5Gon = new Lab()
 
@@ -66,7 +65,6 @@ const createrMeshes = (root: any) => {
         } else if (m.cameraLookData) {
             studio.setTargetCam(m.cameraLookData.lookAt)
         }
-
     }
 
     const removeModel = () => {
@@ -108,7 +106,6 @@ const createrMeshes = (root: any) => {
         m = lab5Gon
         addModel()
     })
-
 
     ui.setOnClick('generate level housesTown', async() => {
         removeModel()
