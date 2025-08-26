@@ -6,6 +6,8 @@ import { tileMapWall } from "../geometry/tileMapWall"
 import * as THREE from "three"
 import { IArrayForBuffers, SegmentType, IArea, ILevelConf, TSchemeElem, TLabData } from "../types/GeomTypes";
 import { calculateHouses } from "./calculateHouses"
+import housesMapSrc from '../assets/tiles_wall.webp'
+import roadMapSrc from '../assets/road_stone.webp'
 
 const COLOR_FLOOR: A3 = _M.hexToNormalizedRGB('090810')
 const COLLISION_NAME_KEY = 'LAB_COLLISION'
@@ -23,11 +25,13 @@ export class Labyrinth {
     _collisionsNames: string[] = []
     _labSheme: TLabData = { areasData: [], positionsEnergy: [], positionsAntigravs: [] }
     mesh: THREE.Group | null = new THREE.Group()
-    mat: THREE.MeshPhongMaterial = new THREE.MeshPhongMaterial({ color: 0xFFFFFF, vertexColors: true })
     cameraLookData: {
         lookAt: THREE.Vector3,
         position: THREE.Vector3,
     } = { lookAt: new THREE.Vector3(), position: new THREE.Vector3() }
+    _materialHouses: THREE.MeshStandardMaterial | null = null
+    _materialRoads: THREE.MeshStandardMaterial | null = null
+    mat: THREE.MeshStandardMaterial = new THREE.MeshStandardMaterial({ color: 0xfffffff }) 
 
     async build (conf: ILevelConf =             
         {  // VVV квадрат средний
@@ -39,11 +43,32 @@ export class Labyrinth {
             ],
         },
     ) {
+        if (!this._materialHouses) {
+            const map = new THREE.TextureLoader().load(housesMapSrc)
+            this._materialHouses = new THREE.MeshStandardMaterial({ 
+                color: 0xfffffff, 
+                map: map,
+                bumpMap: map,
+                bumpScale: 2,
+                vertexColors: true,
+            })
+        }
+        if (!this._materialRoads) {
+            const map = new THREE.TextureLoader().load(roadMapSrc)
+            this._materialRoads = new THREE.MeshStandardMaterial({ 
+                color: 0xffffff, 
+                map: map,
+                bumpMap: map,
+                bumpScale: 2,
+                vertexColors: true, 
+            })
+            this._materialRoads.map.wrapS = this._materialRoads.map.wrapT = THREE.RepeatWrapping
+            this._materialRoads.map.repeat.set(20, 20)
+        }
 
         if (!this.mesh) {
             this.mesh = new THREE.Group()
         }
-
         
         console.log('[MESSAGE:] START SCHEME')
         let d = Date.now()
@@ -184,7 +209,7 @@ export class Labyrinth {
             const { geometry, vCollide } = houses[i]
 
             //const m = new THREE.Mesh(geometry, this._root.materials.walls00)
-            const m = new THREE.Mesh(geometry, this.mat)
+            const m = new THREE.Mesh(geometry, this._materialHouses)
             m.frustumCulled = false
             strict.add(m)
             m.position.y = .1
@@ -225,7 +250,7 @@ export class Labyrinth {
 
             const areaData = areasData[i]
 
-            const r = createArea00(areaData.perimeter, COLOR_FLOOR, tileMapWall.stoneTree, 0, -2, tileMapWall.break)
+            const r = createArea00(areaData.perimeter, COLOR_FLOOR, tileMapWall.stoneTree, 0, -.2, tileMapWall.break)
 
             v.push(...r.v)
             c.push(...r.c)
@@ -237,7 +262,7 @@ export class Labyrinth {
             uv: uv1,
             c,
             //material: this._root.materials.road
-            material: this.mat
+            material: this._materialRoads
         })
         m.position.y = .05
         strict.add(m)

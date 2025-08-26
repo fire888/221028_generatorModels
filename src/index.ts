@@ -1,4 +1,41 @@
 // import './EntitiesTest/phormulas'
+
+
+// import { GLTFExporter } from 'three/examples/jsm/exporters/GLTFExporter.js';
+
+// function save(blob, filename) {
+//   const link = document.createElement('a');
+//   link.href = URL.createObjectURL(blob);
+//   link.download = filename;
+//   link.click();
+//   setTimeout(() => URL.revokeObjectURL(link.href), 1000);
+// }
+
+// function saveArrayBuffer(buffer, filename) {
+//   save(new Blob([buffer], { type: 'application/octet-stream' }), filename);
+// }
+
+// export function exportSceneGLB(scene) {
+//   const exporter = new GLTFExporter();
+//   const options = {
+//     binary: true,          // GLB
+//     onlyVisible: true,     // экспортировать только видимые объекты (по желанию)
+//     truncateDrawRange: true,
+//     maxTextureSize: 4096   // при необходимости уменьшит очень большие текстуры
+//   };
+
+//   exporter.parse(
+//     scene,
+//     (result) => {
+//       // для binary результат — ArrayBuffer
+//       saveArrayBuffer(result, 'scene.glb');
+//     },
+//     options
+//   );
+// }
+
+
+
 import * as THREE from 'three'
 import WebGL from 'three/examples/jsm/capabilities/WebGL';
 import { GLTFExporter } from './helpers/GLTFExporter'
@@ -85,32 +122,50 @@ const createrMeshes = (root: any) => {
     }
 
     const downLoadModel = () => {
+        const exporter = new GLTFExporter()
+
+        function save(blob: any, filename: string) {
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = filename;
+            link.click();
+            setTimeout(() => URL.revokeObjectURL(link.href), 1000);
+        }
+
+        function saveArrayBuffer(buffer: any, filename: string) {
+            save(new Blob([buffer], { type: 'application/octet-stream' }), filename);
+        }
+
+        const options = {
+            binary: true,          // GLB
+            onlyVisible: true,     // экспортировать только видимые объекты (по желанию)
+            truncateDrawRange: true,
+            maxTextureSize: 4096   // при необходимости уменьшит очень большие текстуры
+        };
+
         exporter.parse(
             studio.scene,
-            function (gltf: any) {
-                var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(gltf));
-                var dlAnchorElem = document.getElementById('downloadAnchorElem');
-                dlAnchorElem.setAttribute("href",     dataStr     );
-                dlAnchorElem.setAttribute("download", "scene.gltf");
-                dlAnchorElem.click();
+            function (result: any) {
+                saveArrayBuffer(result, 'scene.glb');
             },
             function ( error: any ) {
                 console.log( 'An error happened' );
             },
+            options
         )
     }
-
-    ui.setOnClick('generate level n5Gon', async() => {
-        removeModel()
-        await lab5Gon.init()
-        m = lab5Gon
-        addModel()
-    })
 
     ui.setOnClick('generate level housesTown', async() => {
         removeModel()
         await lab4.build()
         m = lab4
+        addModel()
+    })
+
+    ui.setOnClick('generate level n5Gon', async() => {
+        removeModel()
+        await lab5Gon.init()
+        m = lab5Gon
         addModel()
     })
 
@@ -120,12 +175,12 @@ const createrMeshes = (root: any) => {
         m = null
     })
 
-    ui.setOnClick('generate WALLS', () => {
-        removeModel()
-        m = createMeshWall(root)
-        //m = createTown2(root)
-        addModel()
-    })
+    // ui.setOnClick('generate WALLS', () => {
+    //     removeModel()
+    //     m = createMeshWall(root)
+    //     //m = createTown2(root)
+    //     addModel()
+    // })
 
     ui.setOnClick('generate rooms', () => {
         removeModel()
@@ -133,13 +188,6 @@ const createrMeshes = (root: any) => {
         m = createTown2(root)
         addModel()
     })
-
-    // ui.setOnClick(null, () => {})
-    // ui.setOnClick(null, () => {})
-    // ui.setOnClick(null, () => {})
-    // ui.setOnClick(null, () => {})
-    // ui.setOnClick(null, () => {})
-    // ui.setOnClick(null, () => {})
 
     ui.setOnClick('generate item', () => {
         removeModel()
@@ -158,18 +206,18 @@ const createrMeshes = (root: any) => {
     })
     ui.setOnClick(null, () => {})
     ui.setOnClick('download model', downLoadModel)
-    ui.setOnClick('download texture 1', () => {
-        downloadImg(texture,  'scene-model-map.jpg').then()
-    })
-    ui.setOnClick('download texture 2', () => {
-        downloadImg(texture0, 'texture01.jpg').then()
-    })
-    ui.setOnClick('download texture 3', () => {
-        downloadImg(consNormSrc, 'roken_down_concrete2_Normal-dx.jpg').then()
-    })
-    ui.setOnClick('download texture 3', () => {
-        downloadImg(consA0Src, 'broken_down_concrete2_ao.jpg').then()
-    })
+    // ui.setOnClick('download texture 1', () => {
+    //     downloadImg(texture,  'scene-model-map.jpg').then()
+    // })
+    // ui.setOnClick('download texture 2', () => {
+    //     downloadImg(texture0, 'texture01.jpg').then()
+    // })
+    // ui.setOnClick('download texture 3', () => {
+    //     downloadImg(consNormSrc, 'roken_down_concrete2_Normal-dx.jpg').then()
+    // })
+    // ui.setOnClick('download texture 3', () => {
+    //     downloadImg(consA0Src, 'broken_down_concrete2_ao.jpg').then()
+    // })
 
     //m = createTown2(root)
     m = lab4
@@ -178,18 +226,18 @@ const createrMeshes = (root: any) => {
 }
 
 
-async function downloadImg (texture: any, name: any) {
-    const image = await fetch(texture)
-    const imageBlog = await image.blob()
-    const imageURL = URL.createObjectURL(imageBlog)
+// async function downloadImg (texture: any, name: any) {
+//     const image = await fetch(texture)
+//     const imageBlog = await image.blob()
+//     const imageURL = URL.createObjectURL(imageBlog)
 
-    const link = document.createElement('a')
-    link.href = imageURL
-    link.download = name
-    document.body.appendChild(link)
-    link.click()
-    document.body.removeChild(link)
-}
+//     const link = document.createElement('a')
+//     link.href = imageURL
+//     link.download = name
+//     document.body.appendChild(link)
+//     link.click()
+//     document.body.removeChild(link)
+// }
 
 
 

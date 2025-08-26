@@ -12,6 +12,8 @@ import { TopTunnel } from './TopTunnel'
 import { createRandomDataForLine } from '../../geometry/_lineGeom'
 import { _M } from "../../geometry/_m"
 import { PosesSleepEnds, Dir, DataToCreateLine } from './types'
+import skyMapSrc from '../../assets/sky.webp'
+import lineMapSrc from '../../assets/env.webp'
 
 
 const LEVEL_H = 5
@@ -52,10 +54,11 @@ export class Lab {
 
         if (!this._material) {
             this._material = new MeshPhongMaterial({ 
-                color: 0xFFFFFF, 
+                color: 0xffffff,
+                //color: 0xaaaaaa, 
                 vertexColors: true,
-                //envMap: root.loader.assets.sky,
-                reflectivity: .6,
+                envMap: new THREE.TextureLoader().load(lineMapSrc),
+                reflectivity: .5,
             })
             this._collisionMaterial = new MeshBasicMaterial({ color: 0xFFFF00 })
         }
