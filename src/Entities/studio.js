@@ -54,8 +54,8 @@ export const createStudio = (cubeMap) => {
     const gridHelper = new THREE.GridHelper(1, 10)
     scene.add(gridHelper)
 
-    const helper = new THREE.AxesHelper(50)
-    scene.add(helper)
+    // const helper = new THREE.AxesHelper(50)
+    // scene.add(helper)
 
     return {
         renderer,
