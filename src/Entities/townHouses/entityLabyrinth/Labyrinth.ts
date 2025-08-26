@@ -43,6 +43,10 @@ export class Labyrinth {
             ],
         },
     ) {
+        conf.SX = Math.floor(Math.random() * 150) + 10
+        conf.SY = Math.floor(Math.random() * 150) + 10
+        conf.N = Math.floor(Math.random() * 200) + 10
+
         if (!this._materialHouses) {
             const map = new THREE.TextureLoader().load(housesMapSrc)
             this._materialHouses = new THREE.MeshStandardMaterial({ 
