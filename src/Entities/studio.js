@@ -2,6 +2,7 @@
 
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+//import skyMapSrc from './level5gon/assets/sky.webp'
 
 
 const BACK_COLOR = 0x333333
@@ -12,7 +13,7 @@ export const createStudio = (cubeMap) => {
     container.style.height = window.innerHeight + 'px';
 
     const scene = new THREE.Scene();
-    //scene.background = new THREE.Color(BACK_COLOR);
+    //scene.background = new THREE.TextureLoader().load(skyMapSrc)
 
     const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 10000);
     camera.position.set(0, 100, 100);

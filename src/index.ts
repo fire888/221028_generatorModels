@@ -1,41 +1,5 @@
 // import './EntitiesTest/phormulas'
 
-
-// import { GLTFExporter } from 'three/examples/jsm/exporters/GLTFExporter.js';
-
-// function save(blob, filename) {
-//   const link = document.createElement('a');
-//   link.href = URL.createObjectURL(blob);
-//   link.download = filename;
-//   link.click();
-//   setTimeout(() => URL.revokeObjectURL(link.href), 1000);
-// }
-
-// function saveArrayBuffer(buffer, filename) {
-//   save(new Blob([buffer], { type: 'application/octet-stream' }), filename);
-// }
-
-// export function exportSceneGLB(scene) {
-//   const exporter = new GLTFExporter();
-//   const options = {
-//     binary: true,          // GLB
-//     onlyVisible: true,     // экспортировать только видимые объекты (по желанию)
-//     truncateDrawRange: true,
-//     maxTextureSize: 4096   // при необходимости уменьшит очень большие текстуры
-//   };
-
-//   exporter.parse(
-//     scene,
-//     (result) => {
-//       // для binary результат — ArrayBuffer
-//       saveArrayBuffer(result, 'scene.glb');
-//     },
-//     options
-//   );
-// }
-
-
-
 import * as THREE from 'three'
 import WebGL from 'three/examples/jsm/capabilities/WebGL';
 import { GLTFExporter } from './helpers/GLTFExporter'
@@ -53,6 +17,8 @@ import texture from './assets/scene-model-map.jpg'
 import texture0 from './assets/texture01.jpg'
 import consA0Src from './assets/broken_down_concrete2_ao.jpg'
 import consNormSrc from './assets/broken_down_concrete2_Normal-dx.jpg'
+
+const pause = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
 
 const createrMeshes = (root: any) => {
     const {
@@ -155,18 +121,32 @@ const createrMeshes = (root: any) => {
         )
     }
 
-    ui.setOnClick('generate level housesTown', async() => {
+    ui.setOnClick('generate level housesTown', async () => {
+        const loader = document.querySelector('.loader')
+        // @ts-ignore
+        loader.style.display = 'block'
+        await pause(1)
+
         removeModel()
         await lab4.build()
         m = lab4
         addModel()
+        // @ts-ignore
+        loader.style.display = 'none'
     })
 
-    ui.setOnClick('generate level n5Gon', async() => {
+    ui.setOnClick('generate level n5Gon', async () => {
+        const loader = document.querySelector('.loader')
+        // @ts-ignore
+        loader.style.display = 'block'
+        await pause(1)
+
         removeModel()
         await lab5Gon.init()
         m = lab5Gon
         addModel()
+        // @ts-ignore
+        loader.style.display = 'none'
     })
 
     ui.setOnClick('generate level', () => {
@@ -221,8 +201,13 @@ const createrMeshes = (root: any) => {
 
     //m = createTown2(root)
     m = lab4
-    lab4.build()
+    lab4.build().then(() => {
+        const loader = document.querySelector('.loader')
+        // @ts-ignore
+        loader.style.display = 'none'
+    })
     addModel()
+
 }
 
 

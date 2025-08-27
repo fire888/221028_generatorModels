@@ -40,6 +40,10 @@ export class Lab {
     } = { lookAt: new THREE.Vector3(), position: new THREE.Vector3() }
 
     async init (params = { TILES_X: 11, TILES_Z: 13, FLOORS_NUM: 5 }) {
+        params.TILES_X = Math.floor(Math.random() * 15) * 2 + 7
+        params.TILES_Z = Math.floor(Math.random() * 15) * 2 + 7
+        params.FLOORS_NUM = Math.floor(Math.random() * 15) + 1
+
         const {
             TILES_X,
             TILES_Z,
@@ -55,10 +59,11 @@ export class Lab {
         if (!this._material) {
             this._material = new MeshPhongMaterial({ 
                 color: 0xffffff,
-                //color: 0xaaaaaa, 
+                specular: 0xffffff,
                 vertexColors: true,
-                envMap: new THREE.TextureLoader().load(lineMapSrc),
-                reflectivity: .5,
+                envMap: new THREE.TextureLoader().load(skyMapSrc),
+                reflectivity: .7,
+                shininess: 30,
             })
             this._collisionMaterial = new MeshBasicMaterial({ color: 0xFFFF00 })
         }
