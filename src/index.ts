@@ -14,7 +14,6 @@ import { createMeshWall } from 'Entities/meshWall';
 import { Lab } from './Entities/level5gon/entities/labyrinth/Lab'
 import { Labyrinth } from 'Entities/townHouses/entityLabyrinth/Labyrinth'
 import texture from './assets/scene-model-map.jpg'
-import texture0 from './assets/texture01.jpg'
 import consA0Src from './assets/broken_down_concrete2_ao.jpg'
 import consNormSrc from './assets/broken_down_concrete2_Normal-dx.jpg'
 
@@ -24,7 +23,6 @@ const createrMeshes = (root: any) => {
     const {
         studio,
         ui,
-        exporter,
     } = root
 
     root.materials = {
@@ -59,25 +57,39 @@ const createrMeshes = (root: any) => {
     const structure = createStructure3(root)
     const lab4 = new Labyrinth()
     const lab5Gon = new Lab()
+    const loader = document.querySelector('.loader')
 
-    const addModel = () => {
-        studio.addToScene(m.mesh)
-        if (m.mesh.geometry) {
-            m.mesh.geometry.computeBoundingSphere()
-            studio.setTargetCam(m.mesh.geometry.boundingSphere.center)
-        } else if (m.cameraLookData) {
-            studio.setTargetCam(m.cameraLookData.lookAt)
+    const addModel = async () => {
+        if (m && m.mesh) {
+            studio.addToScene(m.mesh)
+            if (m.mesh.geometry) {
+                m.mesh.geometry.computeBoundingSphere()
+                studio.setTargetCam(m.mesh.geometry.boundingSphere.center)
+            } else if (m.cameraLookData) {
+                studio.setTargetCam(m.cameraLookData.lookAt)
+            }
         }
+
+        await pause(1)
+
+        // @ts-ignore
+        loader.style.display = 'none'
     }
 
-    const removeModel = () => {
+    const removeModel = async () => {
+        // @ts-ignore
+        loader.style.display = 'block'
+        await pause(1)
+
         structure.destroyStructure()
         if (m && m.type && m.type === 'HouseTown') {
             studio.removeFromScene(m.mesh)
             m.clear()
         }
         if (m) {
-            studio.removeFromScene(m.mesh)
+            if (m.mesh) {
+                studio.removeFromScene(m.mesh)
+            }
             m && m.mesh && m.mesh.geometry && m.mesh.geometry.dispose()
             delete m.mesh
             m.meshCollision && m.meshCollision.geometry.dispose()
@@ -85,6 +97,8 @@ const createrMeshes = (root: any) => {
             m.meshCollisionCar && m.meshCollisionCar.geometry.dispose()
             delete m.meshCollisionCar
         }
+
+        await pause(1)
     }
 
     const downLoadModel = () => {
@@ -121,109 +135,107 @@ const createrMeshes = (root: any) => {
         )
     }
 
-    ui.setOnClick('generate level housesTown', async () => {
-        const loader = document.querySelector('.loader')
-        // @ts-ignore
-        loader.style.display = 'block'
-        await pause(1)
+    const actions = {
+        'housesTown': async () => {
+            await removeModel()
+            await lab4.build()
+            m = lab4
+            await addModel()
+        },
+        'n5Gon': async () => {
+            await removeModel()
+            await lab5Gon.init()
+            m = lab5Gon
+            await addModel()
+        },
+        'level': async () => {
+            await removeModel()
+            structure.generateStructure()
+            m = null
+            await addModel()
+        },
+        'wall': async () => {
+            await removeModel()
+            m = createMeshWall(root)
+            await addModel()
+        },
+        'rooms': async () => {
+            await removeModel()
+            m = createTown2(root)
+            await addModel()
+        },
+        'item': async () => {
+            await removeModel()
+            m = createMeshGallery(root)
+            await addModel()
+        },
+        'stairs': async () => {
+            await removeModel()
+            m = createMeshSuper(root)
+            await addModel()
+        },
+        'one_stair': async () => {
+            await removeModel()
+            m = createMeshStairs(root)
+            await addModel()
+        },
+    }
 
-        removeModel()
-        await lab4.build()
-        m = lab4
-        addModel()
-        // @ts-ignore
-        loader.style.display = 'none'
-    })
-
-    ui.setOnClick('generate level n5Gon', async () => {
-        const loader = document.querySelector('.loader')
-        // @ts-ignore
-        loader.style.display = 'block'
-        await pause(1)
-
-        removeModel()
-        await lab5Gon.init()
-        m = lab5Gon
-        addModel()
-        // @ts-ignore
-        loader.style.display = 'none'
-    })
-
-    ui.setOnClick('generate level', () => {
-        removeModel()
-        structure.generateStructure()
-        m = null
-    })
-
-    // ui.setOnClick('generate WALLS', () => {
-    //     removeModel()
-    //     m = createMeshWall(root)
-    //     //m = createTown2(root)
-    //     addModel()
-    // })
-
-    ui.setOnClick('generate rooms', () => {
-        removeModel()
-        //m = createMeshWall(root)
-        m = createTown2(root)
-        addModel()
-    })
-
-    ui.setOnClick('generate item', () => {
-        removeModel()
-        m = createMeshGallery(root)
-        addModel()
-    })
-    ui.setOnClick('generate stairs', () => {
-        removeModel()
-        m = createMeshSuper(root)
-        addModel()
-    })
-    ui.setOnClick('generate one stair', () => {
-        removeModel()
-        m = createMeshStairs(root)
-        addModel()
-    })
-    ui.setOnClick(null, () => {})
+    ui.setOnClick('houses town', actions.housesTown, 'button-create')
+    ui.setOnClick('n 5 Gon', actions.n5Gon, 'button-create')
+    ui.setOnClick('level', actions.level, 'button-create')
+    // ui.setOnClick('generate WALLS', actions.wall, 'button-create', 5)
+    ui.setOnClick('rooms', actions.rooms, 'button-create')
+    ui.setOnClick('item', actions.item, 'button-create')
+    ui.setOnClick('stairs', actions.stairs, 'button-create')
+    ui.setOnClick('one stair', actions.one_stair, 'button-create')
+    ui.addEmptyLine()
     ui.setOnClick('download model', downLoadModel)
-    // ui.setOnClick('download texture 1', () => {
-    //     downloadImg(texture,  'scene-model-map.jpg').then()
-    // })
-    // ui.setOnClick('download texture 2', () => {
-    //     downloadImg(texture0, 'texture01.jpg').then()
-    // })
-    // ui.setOnClick('download texture 3', () => {
-    //     downloadImg(consNormSrc, 'roken_down_concrete2_Normal-dx.jpg').then()
-    // })
-    // ui.setOnClick('download texture 3', () => {
-    //     downloadImg(consA0Src, 'broken_down_concrete2_ao.jpg').then()
-    // })
 
-    //m = createTown2(root)
-    m = lab4
-    lab4.build().then(() => {
-        const loader = document.querySelector('.loader')
-        // @ts-ignore
-        loader.style.display = 'none'
-    })
-    addModel()
-
+    // https://site.com/page?s=6
+    const params = new URLSearchParams(window.location.search)
+    const mode = params.get('s')
+    
+    switch (mode) {
+        case '8':
+            actions.housesTown()
+            ui.setActiveButton('houses town')
+            break;
+        case '7':
+            actions.n5Gon()
+            ui.setActiveButton('n 5 Gon')
+            break;
+        case '6':
+            actions.level()
+            ui.setActiveButton('level')
+            break;
+        case '5':
+            actions.wall()
+            ui.setActiveButton('wall')
+            break;
+        case '4':
+            actions.rooms()
+            ui.setActiveButton('rooms')
+            break;
+        case '3':
+            actions.item()
+            ui.setActiveButton('item')
+            break;
+        case '2':
+            actions.stairs()
+            ui.setActiveButton('stairs')
+            break;
+        case '1':
+            actions.one_stair()
+            ui.setActiveButton('one stair')
+            break;
+        default:
+            actions.housesTown()
+            ui.setActiveButton('houses town')
+            break;
+    }
+    
 }
-
-
-// async function downloadImg (texture: any, name: any) {
-//     const image = await fetch(texture)
-//     const imageBlog = await image.blob()
-//     const imageURL = URL.createObjectURL(imageBlog)
-
-//     const link = document.createElement('a')
-//     link.href = imageURL
-//     link.download = name
-//     document.body.appendChild(link)
-//     link.click()
-//     document.body.removeChild(link)
-// }
-
 
 
 const threeApp = () => {
