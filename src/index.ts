@@ -70,7 +70,7 @@ const createrMeshes = (root: any) => {
             }
         }
 
-        await pause(1)
+        await pause(10)
 
         // @ts-ignore
         loader.style.display = 'none'
